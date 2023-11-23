@@ -1,7 +1,32 @@
 import "./Login.css";
 import {Link} from 'react-router-dom'
+import {  FormEvent, useState, ChangeEventHandler } from "react";
 
-const Login = () => {
+interface FormData {
+  email: string;
+  password: string;
+
+}
+
+const Login: React.FC = () => {
+      const [formData, setFormData] = useState<FormData>({
+        email: "",
+        password: "",
+      });
+
+        const handleInputChange: ChangeEventHandler<HTMLInputElement> = (e) => {
+          setFormData({
+            ...formData,
+            [e.target.name]: e.target.value,
+          });
+        };
+
+      const handleFormSubmit = (e: FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+
+        console.log(formData);
+      };
+
   return (
     <div>
       <div className="loginContainer">
@@ -10,27 +35,28 @@ const Login = () => {
             <h1 className="loginHeading">
               Login <span className="loomSpan">Loom</span>
             </h1>
-            {/* <p>Login Here</p> */}
           </div>
-          <form className="loginForm" method="post">
+          <form className="loginForm" method="post" onSubmit={handleFormSubmit}>
             <div className="formInput">
-              {/* <label htmlFor="email">Email</label> */}
               <input
                 type="text"
                 className="email"
                 id="email"
                 placeholder="Enter Email.."
                 name="email"
+                value={formData.email}
+                onChange={handleInputChange}
               />
             </div>
             <div className="formInput">
-              {/* <label htmlFor="password">Password</label> */}
               <input
                 type="text"
                 className="email"
                 id="password"
                 placeholder="Enter Password.."
                 name="password"
+                value={formData.password}
+                onChange={handleInputChange}
               />
             </div>
             <div className="formInput">
@@ -38,8 +64,9 @@ const Login = () => {
             </div>
             <div className="notMember">
               <p>
-                Not A User? <Link className="linkregister" to="/register">
-                   Register
+                Not A User?{" "}
+                <Link className="linkregister" to="/register">
+                  Register
                 </Link>
               </p>
             </div>

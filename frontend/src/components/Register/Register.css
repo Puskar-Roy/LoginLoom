@@ -1,0 +1,87 @@
+.registerContainer{
+    height: 100vh;
+    display: flex;
+    align-items: center;
+}
+.registerHeading{
+    color: #F4BF96;
+
+}
+.loomSpan{
+    color: #A3B763;
+
+}
+
+.registerMainContainer{
+    width: 84%;
+    /* height: 65%; */
+    /* border-radius: 26px; */
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 25px;
+    /* box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px; */
+}
+
+.registerForm {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 17px;
+}
+
+.email ,.password ,.name , .cpassword{
+    width: 224px;
+    height: 36px;
+    border-radius: 20px;
+    border: 2px solid grey;
+    padding: 0 18px;
+    font-weight: 400;
+    font-family: 'Ubuntu', sans-serif;
+
+}
+
+.email:focus ,.password:focus {
+    outline:1px solid #F4BF96;
+}
+
+.formInput label {
+    font-size: 21px;
+}
+
+.formInput {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.registerBtn {
+    width: 224px;
+    height: 36px;
+    border-radius: 20px;
+    font-family: 'Ubuntu', sans-serif;
+    background-color: #CE5A67;
+    border: none;
+    color: #fff;
+    transition:0.2s ease-in;
+
+}
+.registerBtn:hover {
+    background-color: #A3B763;
+    transition:0.2s ease-in;
+
+}
+
+.notMember p {
+    font-size: 12px;
+    text-align: center;
+    color: #CE5A67;
+
+}
+.linkregister{
+    text-decoration: none;
+    color: #A3B763;
+}
