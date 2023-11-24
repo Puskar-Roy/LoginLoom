@@ -4,14 +4,16 @@ import { GlobalContext } from "../context/GlobalContext";
 interface ThemeProviderProps {
   children: ReactNode;
 }
+interface GlobalContextProps {
+  theme: string;
+  toggle: () => void;
+}
 
 const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
   const contextValue = useContext<GlobalContextProps | undefined>(
     GlobalContext
   );
-  //   const { theme } = useContext(GlobalContext);
   if (!contextValue) {
-    // Handle the case where contextValue is undefined
     return null;
   }
   const { theme } = contextValue;

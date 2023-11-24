@@ -5,14 +5,20 @@ import { FaSun } from "react-icons/fa6";
 
 import "./ThemeButton.css";
 
+interface GlobalContextProps {
+  theme: string;
+  toggle: () => void;
+}
 const ThemeBtn: React.FC = () => {
-  const { theme, toggle } = useContext<{ theme: string; toggle: () => void }>(
-    GlobalContext
-  );
-    if (!theme || !toggle) {
-//   Handle the case where theme or toggle is undefined
-      return null;
-    }
+  const contextValue = useContext(GlobalContext) as
+    | GlobalContextProps
+    | undefined;
+
+  if (!contextValue) {
+    return null;
+  }
+
+  const { theme, toggle } = contextValue;
 
   return (
     <div className="themeButtonContainer">
@@ -25,26 +31,3 @@ const ThemeBtn: React.FC = () => {
 
 export default ThemeBtn;
 
-
-
-// // import React, { useContext } from "react";
-// // import { GlobalContext, GlobalContextProps } from "../../context/GlobalContext";
-
-// const ThemeBtn: React.FC = () => {
-//   const { theme, toggle } = useContext<GlobalContextProps | undefined>(
-//     GlobalContext
-//   );
-
-//   if (!theme || !toggle) {
-    // Handle the case where theme or toggle is undefined
-//     return null;
-//   }
-
-//   return (
-//     <div>
-//       <button onClick={toggle}>Change</button>
-//     </div>
-//   );
-// };
-
-// export default ThemeBtn;
