@@ -21,11 +21,11 @@ const ThemeBtn: React.FC = () => {
   const { theme, toggle } = contextValue;
 
   return (
-    <div className="themeButtonContainer">
+    // <div className="themeButtonContainer">
       <div className="themeButton" onClick={toggle}>
         {theme === "light" ? <MdDarkMode /> : <FaSun />}
       </div>
-    </div>
+    // </div>
   );
 };
 

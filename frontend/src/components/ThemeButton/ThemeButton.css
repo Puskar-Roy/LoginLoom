@@ -5,8 +5,12 @@
     padding-top: 24px;
     padding: 20px auto;
     width: 96%;
+    /* top: 20px; */
 }
 .themeButton{
+    position: absolute;
+    top: 20px;
+    right: 18px;
     background-color: aliceblue;
     width: 32px;
     height: 30px;
