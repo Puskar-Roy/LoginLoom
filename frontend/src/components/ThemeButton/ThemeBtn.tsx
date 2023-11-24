@@ -9,7 +9,10 @@ const ThemeBtn: React.FC = () => {
   const { theme, toggle } = useContext<{ theme: string; toggle: () => void }>(
     GlobalContext
   );
-  console.log(theme);
+    if (!theme || !toggle) {
+//   Handle the case where theme or toggle is undefined
+      return null;
+    }
 
   return (
     <div className="themeButtonContainer">
@@ -21,3 +24,27 @@ const ThemeBtn: React.FC = () => {
 };
 
 export default ThemeBtn;
+
+
+
+// // import React, { useContext } from "react";
+// // import { GlobalContext, GlobalContextProps } from "../../context/GlobalContext";
+
+// const ThemeBtn: React.FC = () => {
+//   const { theme, toggle } = useContext<GlobalContextProps | undefined>(
+//     GlobalContext
+//   );
+
+//   if (!theme || !toggle) {
+    // Handle the case where theme or toggle is undefined
+//     return null;
+//   }
+
+//   return (
+//     <div>
+//       <button onClick={toggle}>Change</button>
+//     </div>
+//   );
+// };
+
+// export default ThemeBtn;

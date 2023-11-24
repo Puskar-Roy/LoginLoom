@@ -6,7 +6,15 @@ interface ThemeProviderProps {
 }
 
 const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
-  const { theme } = useContext(GlobalContext);
+  const contextValue = useContext<GlobalContextProps | undefined>(
+    GlobalContext
+  );
+  //   const { theme } = useContext(GlobalContext);
+  if (!contextValue) {
+    // Handle the case where contextValue is undefined
+    return null;
+  }
+  const { theme } = contextValue;
   return <div className={theme}>{children}</div>;
 };
 
