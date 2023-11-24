@@ -1,0 +1,17 @@
+.themeButtonContainer{
+    display: flex;
+    justify-content: end;
+    align-items: center;
+    padding-top: 24px;
+    padding: 20px auto;
+    width: 96%;
+}
+.themeButton{
+    background-color: aliceblue;
+    width: 32px;
+    height: 30px;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
