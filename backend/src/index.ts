@@ -12,7 +12,7 @@ app.use(helmet());
 app.use(morgan("dev"));
 app.use(express.json())
 
-app.use(authRoutes);
+app.use("/api/auth",authRoutes);
 
 app.all("*", (req: Request, res: Response, next: NextFunction) => {
   next(new AppError(`Can't find ${req.originalUrl} on this server!`, 404));
