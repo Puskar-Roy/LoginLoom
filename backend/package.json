@@ -6,9 +6,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc",
-    "start": "node dist/index.js",
-    "dev": "ts-node src/index.ts",
-    "prod": "npm run build && npm start"
+    "start": "ts-node src/index.ts",
+    "dev": "nodemon src/index.ts",
+    "vercel-build":"echo hello"
   },
   "repository": {
     "type": "git",

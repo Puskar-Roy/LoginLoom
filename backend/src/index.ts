@@ -21,3 +21,6 @@ app.all("*", (req: Request, res: Response, next: NextFunction) => {
 app.listen(process.env.PORT, () => {
   console.log(`Server Is Running on Port ${process.env.PORT}`);
 });
+
+
+export default app;
