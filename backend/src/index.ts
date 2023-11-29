@@ -2,6 +2,7 @@ import express, { Express, Request, Response, NextFunction } from "express";
 require("dotenv").config();
 import helmet from "helmet";
 import morgan from "morgan";
+import cookie from 'cookie-parser';
 import AppError from "./utils/appError";
 import authRoutes from "./router/authRoutes";
 import "./database/connectDb";
@@ -10,7 +11,8 @@ const app: Express = express();
 
 app.use(helmet());
 app.use(morgan("dev"));
-app.use(express.json())
+app.use(express.json());
+app.use(cookie());
 
 app.use("/api/auth",authRoutes);
 

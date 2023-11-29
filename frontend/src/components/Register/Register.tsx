@@ -24,12 +24,12 @@ const Register: React.FC = () => {
       ...formData,
       [e.target.name]: e.target.value,
     });
+
   };
 
-  const handleFormSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleFormSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
-    console.log(formData);
+    
   };
   return (
     <div>

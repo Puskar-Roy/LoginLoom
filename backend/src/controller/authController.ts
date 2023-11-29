@@ -1,19 +1,61 @@
 import { Request, Response, NextFunction } from "express";
+import bcrypt from "bcryptjs";
 import asyncHandler from "../utils/catchAsync";
 import UserModel from "../models/userSchema";
+import jwt from 'jsonwebtoken'
+
+
 
 export const login = asyncHandler(async (req: Request, res: Response) => {
   const { email, password } = req.body;
   const user = await UserModel.findOne({ email });
+
   if (!user) {
-    return res.status(500).json({
+    return res.status(404).json({
       success: false,
-      message: "User Not Exist !",
+      message: "Invalid credentials",
     });
   }
 
-  res.status(200).json({ email, password });
+  const isPasswordMatch = await bcrypt.compare(password, user.password);
+
+  if (!isPasswordMatch) {
+    return res.status(401).json({
+      success: false,
+      message: "Invalid credentials",
+    });
+  }
+ 
+
+  const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET);
+  var expireTime: number = parseInt(process.env.JWT_COOKIE_EXPIRES_IN);
+  console.log(expireTime);
+  console.log(token);
+  
+  
+  const cookieOption = {
+    expires: new Date(Date.now() + expireTime * 24 * 60 * 60 * 1000),
+    httpOnly: true,
+    secure: req.secure || req.headers["x-forwarded-proto"] === "https",
+    // signed: true,
+  };
+  res.cookie("jwt", token, cookieOption);
+
+  user.password = undefined;
+  user.cpassword = undefined;
+
+  res.setHeader("Authorization", `Bearer ${token}`);
+  res.status(200).json({ success: true, data: user , jwt_token : token });
 });
+
+
+
+
+export const test = asyncHandler(async (req: Request, res: Response) => {
+  res.status(200).json({ success: true });
+
+})
+
 
 export const register = asyncHandler(async (req: Request, res: Response) => {
   const { name, email, password, cpassword } = req.body;

@@ -1,6 +1,7 @@
 import "./Login.css";
 import {Link} from 'react-router-dom'
 import {  FormEvent, useState, ChangeEventHandler } from "react";
+import axios from "axios";
 
 interface FormData {
   email: string;
@@ -21,10 +22,15 @@ const Login: React.FC = () => {
           });
         };
 
-      const handleFormSubmit = (e: FormEvent<HTMLFormElement>) => {
+      const handleFormSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-
-        console.log(formData);
+        const response = await axios.post(
+          `http://localhost:5000/api/auth/login`,
+          formData,
+          { withCredentials: true }
+        );
+        console.log(response.data);
+      
       };
 
   return (
