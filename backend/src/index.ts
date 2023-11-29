@@ -3,6 +3,7 @@ require("dotenv").config();
 import helmet from "helmet";
 import morgan from "morgan";
 import cookie from 'cookie-parser';
+import cors from 'cors'
 import AppError from "./utils/appError";
 import authRoutes from "./router/authRoutes";
 import "./database/connectDb";
@@ -10,6 +11,7 @@ import "./database/connectDb";
 const app: Express = express();
 
 app.use(helmet());
+app.use(cors({ credentials: true, origin: true}));
 app.use(morgan("dev"));
 app.use(express.json());
 app.use(cookie());
