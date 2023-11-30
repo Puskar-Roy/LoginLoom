@@ -1,4 +1,10 @@
-import { FormEvent, useState, ChangeEventHandler, useContext , useEffect } from "react";
+import {
+  FormEvent,
+  useState,
+  ChangeEventHandler,
+  useContext,
+  useEffect,
+} from "react";
 import { GlobalContext } from "../../context/GlobalContext";
 import "./Login.css";
 import { Link } from "react-router-dom";
@@ -25,6 +31,35 @@ const Login: React.FC = () => {
     password: "",
   });
 
+
+    const checkUser = async () => {
+      const token = localStorage.getItem("jwt_token");
+
+      try {
+        const response = await axios.get(
+          `http://localhost:5000/api/auth/checkUser`,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: token,
+            },
+          }
+        );
+
+        if (response.data.isAuthorized === true) {
+          navigate("/home");
+        } else if (response.data.isAuthorized === false) {
+          navigate("/");
+        }
+      } catch (error) {
+        console.error("Error checking user:", error);
+      }
+    };
+
+    useEffect(() => {
+      checkUser();
+    }, []);
+
   const contextValue = useContext(GlobalContext) as
     | GlobalContextProps
     | undefined;
@@ -43,34 +78,6 @@ const Login: React.FC = () => {
   };
 
 
-
-  const checkUser = async () => {
-    const token = localStorage.getItem("jwt_token");
-
-    try {
-      const response = await axios.get(
-        `http://localhost:5000/api/auth/checkUser`,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: token,
-          },
-        }
-      );
-
-      if (response.data.isAuthorized === true) {
-        navigate("/home");
-      } else if (response.data.isAuthorized === false) {
-        navigate("/");
-      }
-    } catch (error) {
-      console.error("Error checking user:", error);
-    }
-  };
-
-  useEffect(() => {
-    checkUser();
-  }, []);
 
   const handleFormSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
