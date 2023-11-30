@@ -8,6 +8,7 @@ import "./ThemeButton.css";
 interface GlobalContextProps {
   theme: string;
   toggle: () => void;
+  token:string;
 }
 const ThemeBtn: React.FC = () => {
   const contextValue = useContext(GlobalContext) as
@@ -19,7 +20,6 @@ const ThemeBtn: React.FC = () => {
   }
 
   const { theme, toggle } = contextValue;
-
   return (
     // <div className="themeButtonContainer">
       <div className="themeButton" onClick={toggle}>

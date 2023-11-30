@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import bcrypt from "bcryptjs";
 import asyncHandler from "../utils/catchAsync";
 import UserModel from "../models/userSchema";
-import jwt from 'jsonwebtoken'
+import * as jwt from 'jsonwebtoken'
 
 
 
@@ -81,3 +81,37 @@ export const register = asyncHandler(async (req: Request, res: Response) => {
     return res.status(500).json({ message: error, success: false });
   }
 });
+
+
+export const checkUser = asyncHandler(async(req:Request ,res:Response )=>{
+  try {
+     const token = req.headers.authorization;
+     console.log(token);
+     
+     if (!token) {
+       return res.status(200).json({
+         isAuthorized: false,
+       });
+     }
+     const decoded = jwt.verify(token, process.env.JWT_SECRET) as {
+       userId: string;
+     };
+     console.log(decoded.userId);
+    const checkUser = await UserModel.findById({_id:decoded.userId});
+    // console.log(checkUser);
+    if(!checkUser){
+       return res.status(401).json({
+         isAuthorized: false,
+       });
+    }
+     res.status(200).json({
+       isAuthorized: true
+     });
+
+
+  } catch (error) {
+    console.log(error);
+    
+    
+  }
+})

@@ -1,37 +1,95 @@
+import { FormEvent, useState, ChangeEventHandler, useContext , useEffect } from "react";
+import { GlobalContext } from "../../context/GlobalContext";
 import "./Login.css";
-import {Link} from 'react-router-dom'
-import {  FormEvent, useState, ChangeEventHandler } from "react";
+import { Link } from "react-router-dom";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 interface FormData {
   email: string;
   password: string;
+}
 
+interface GlobalContextProps {
+  theme: string;
+  toggle: () => void;
+  token: string;
+  addToken: (arg0: string) => void;
 }
 
 const Login: React.FC = () => {
-      const [formData, setFormData] = useState<FormData>({
-        email: "",
-        password: "",
-      });
+  const navigate = useNavigate();
 
-        const handleInputChange: ChangeEventHandler<HTMLInputElement> = (e) => {
-          setFormData({
-            ...formData,
-            [e.target.name]: e.target.value,
-          });
-        };
+  const [formData, setFormData] = useState<FormData>({
+    email: "",
+    password: "",
+  });
 
-      const handleFormSubmit = async (e: FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        const response = await axios.post(
-          `http://localhost:5000/api/auth/login`,
-          formData,
-          { withCredentials: true }
-        );
-        console.log(response.data);
-      
-      };
+  const contextValue = useContext(GlobalContext) as
+    | GlobalContextProps
+    | undefined;
+
+  if (!contextValue) {
+    return null;
+  }
+
+  const { addToken } = contextValue;
+
+  const handleInputChange: ChangeEventHandler<HTMLInputElement> = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+
+
+  const checkUser = async () => {
+    const token = localStorage.getItem("jwt_token");
+
+    try {
+      const response = await axios.get(
+        `http://localhost:5000/api/auth/checkUser`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: token,
+          },
+        }
+      );
+
+      if (response.data.isAuthorized === true) {
+        navigate("/home");
+      } else if (response.data.isAuthorized === false) {
+        navigate("/");
+      }
+    } catch (error) {
+      console.error("Error checking user:", error);
+    }
+  };
+
+  useEffect(() => {
+    checkUser();
+  }, []);
+
+  const handleFormSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const response = await axios.post(
+      `http://localhost:5000/api/auth/login`,
+      formData,
+      { withCredentials: true }
+    );
+    try {
+      const token = response.data.jwt_token;
+      document.cookie = `jwt=${token}; max-age=${60 * 60 * 24 * 7}; path=/`;
+
+      localStorage.setItem("jwt_token", token);
+      addToken(token);
+      navigate("/home");
+    } catch (error) {
+      navigate("/");
+    }
+  };
 
   return (
     <div>
