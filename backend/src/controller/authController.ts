@@ -1,10 +1,8 @@
-import { Request, Response, NextFunction } from "express";
+import { Request, Response } from "express";
 import bcrypt from "bcryptjs";
 import asyncHandler from "../utils/catchAsync";
 import UserModel from "../models/userSchema";
-import * as jwt from 'jsonwebtoken'
-
-
+import * as jwt from "jsonwebtoken";
 
 export const login = asyncHandler(async (req: Request, res: Response) => {
   const { email, password } = req.body;
@@ -25,14 +23,12 @@ export const login = asyncHandler(async (req: Request, res: Response) => {
       message: "Invalid credentials",
     });
   }
- 
 
   const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET);
-  var expireTime: number = parseInt(process.env.JWT_COOKIE_EXPIRES_IN);
+  const expireTime: number = parseInt(process.env.JWT_COOKIE_EXPIRES_IN);
   console.log(expireTime);
   console.log(token);
-  
-  
+
   const cookieOption = {
     expires: new Date(Date.now() + expireTime * 24 * 60 * 60 * 1000),
     httpOnly: true,
@@ -45,17 +41,12 @@ export const login = asyncHandler(async (req: Request, res: Response) => {
   user.cpassword = undefined;
 
   res.setHeader("Authorization", `Bearer ${token}`);
-  res.status(200).json({ success: true, data: user , jwt_token : token });
+  res.status(200).json({ success: true, data: user, jwt_token: token });
 });
-
-
-
 
 export const test = asyncHandler(async (req: Request, res: Response) => {
   res.status(200).json({ success: true });
-
-})
-
+});
 
 export const register = asyncHandler(async (req: Request, res: Response) => {
   const { name, email, password, cpassword } = req.body;
@@ -82,36 +73,31 @@ export const register = asyncHandler(async (req: Request, res: Response) => {
   }
 });
 
-
-export const checkUser = asyncHandler(async(req:Request ,res:Response )=>{
+export const checkUser = asyncHandler(async (req: Request, res: Response) => {
   try {
-     const token = req.headers.authorization;
-     console.log(token);
-     
-     if (!token) {
-       return res.status(200).json({
-         isAuthorized: false,
-       });
-     }
-     const decoded = jwt.verify(token, process.env.JWT_SECRET) as {
-       userId: string;
-     };
-     console.log(decoded.userId);
-    const checkUser = await UserModel.findById({_id:decoded.userId});
-    // console.log(checkUser);
-    if(!checkUser){
-       return res.status(401).json({
-         isAuthorized: false,
-       });
+    const token = req.headers.authorization;
+    console.log(token);
+
+    if (!token) {
+      return res.status(200).json({
+        isAuthorized: false,
+      });
     }
-     res.status(200).json({
-       isAuthorized: true
-     });
-
-
+    const decoded = jwt.verify(token, process.env.JWT_SECRET) as {
+      userId: string;
+    };
+    console.log(decoded.userId);
+    const checkUser = await UserModel.findById({ _id: decoded.userId });
+    // console.log(checkUser);
+    if (!checkUser) {
+      return res.status(401).json({
+        isAuthorized: false,
+      });
+    }
+    res.status(200).json({
+      isAuthorized: true,
+    });
   } catch (error) {
     console.log(error);
-    
-    
   }
-})
+});

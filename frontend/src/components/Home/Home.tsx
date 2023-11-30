@@ -10,7 +10,7 @@ const Home: React.FC = () => {
 
     try {
       const response = await axios.get(
-        `http://localhost:5000/api/auth/checkUser`,
+        `https://login-loom-gytz.vercel.app/api/auth/checkUser`,
         {
           headers: {
             "Content-Type": "application/json",

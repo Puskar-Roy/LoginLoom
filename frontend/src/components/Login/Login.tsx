@@ -37,7 +37,7 @@ const Login: React.FC = () => {
 
       try {
         const response = await axios.get(
-          `http://localhost:5000/api/auth/checkUser`,
+          `https://login-loom-gytz.vercel.app/api/auth/checkUser`,
           {
             headers: {
               "Content-Type": "application/json",
@@ -82,7 +82,7 @@ const Login: React.FC = () => {
   const handleFormSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const response = await axios.post(
-      `http://localhost:5000/api/auth/login`,
+      `https://login-loom-gytz.vercel.app/api/auth/login`,
       formData,
       { withCredentials: true }
     );

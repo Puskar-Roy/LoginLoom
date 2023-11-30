@@ -8,13 +8,11 @@ class ErrorHandler extends Error {
   }
 }
 
-
-
 const errorMiddleware = (
   err: ErrorHandler,
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   err.message = err.message || "Internal server error";
   err.statusCode = err.statusCode || 500;

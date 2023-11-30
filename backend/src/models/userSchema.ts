@@ -28,9 +28,8 @@ const userSchema = new Schema<User>(
       required: true,
     },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
-
 
 userSchema.pre("save", async function (next) {
   const user = this as User;
@@ -52,7 +51,6 @@ userSchema.pre("save", async function (next) {
     return next(error);
   }
 });
-
 
 const UserModel = model<User>("User", userSchema);
 
